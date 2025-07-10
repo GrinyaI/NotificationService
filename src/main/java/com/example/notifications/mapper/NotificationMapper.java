@@ -1,0 +1,31 @@
+package com.example.notifications.mapper;
+
+import com.example.notifications.dto.NotificationRequest;
+import com.example.notifications.dto.NotificationResponse;
+import com.example.notifications.entity.Notification;
+import com.example.notifications.entity.enums.Channel;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+@Mapper(componentModel = "spring", uses = {})
+public interface NotificationMapper {
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "sentAt", ignore = true)
+    @Mapping(target = "errorDescription", ignore = true)
+    @Mapping(target = "isRead", ignore = true)
+    @Mapping(target = "archived", ignore = true)
+    Notification toEntity(NotificationRequest request, Channel channel);
+
+    @Mapping(target = "id", source = "entity.id")
+    @Mapping(target = "recipientId", source = "entity.recipientId")
+    @Mapping(target = "channel", source = "entity.channel")
+    @Mapping(target = "payload", source = "entity.payload")
+    @Mapping(target = "status", source = "entity.status")
+    @Mapping(target = "createdAt", source = "entity.createdAt")
+    @Mapping(target = "sentAt", source = "entity.sentAt")
+    @Mapping(target = "isRead", source = "entity.isRead")
+    @Mapping(target = "archived", source = "entity.archived")
+    NotificationResponse toDto(Notification entity);
+}
