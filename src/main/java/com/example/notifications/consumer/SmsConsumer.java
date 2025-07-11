@@ -19,6 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SmsConsumer {
     private static final Logger log = LoggerFactory.getLogger(SmsConsumer.class);
+
     private final NotificationRepository repository;
     private final RetryTemplate retryTemplate;
 
@@ -35,9 +36,7 @@ public class SmsConsumer {
 
     private Void process(UUID id, String payload) {
         try {
-            // Эмуляция отправки sms
             log.info("Отправка SMS уведомления {}: {}", id, payload);
-            // Обновление статуса
             repository.findById(id).ifPresent(n -> {
                 n.setStatus(Status.SENT);
                 n.setSentAt(Instant.now());

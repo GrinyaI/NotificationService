@@ -19,6 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class EmailConsumer {
     private static final Logger log = LoggerFactory.getLogger(EmailConsumer.class);
+
     private final NotificationRepository repository;
     private final RetryTemplate retryTemplate;
 
@@ -35,9 +36,7 @@ public class EmailConsumer {
 
     private Void process(UUID id, String payload) {
         try {
-            // Эмуляция отправки email
             log.info("Отправка EMAIL уведомления {}: {}", id, payload);
-            // Обновление статуса
             repository.findById(id).ifPresent(n -> {
                 n.setStatus(Status.SENT);
                 n.setSentAt(Instant.now());

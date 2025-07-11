@@ -10,9 +10,11 @@ import com.example.notifications.mapper.NotificationMapper;
 import com.example.notifications.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,23 +69,30 @@ public class NotificationService {
         return repository.findById(id);
     }
 
-    @Cacheable(
-            value = "notifications-list",
-            key = "#recipientId + '-' + #channels + '-' + #statuses + '-' + #pageable.pageNumber + '-' + #pageable.pageSize"
-    )
     @Transactional(readOnly = true)
-    public List<Notification> getNotificationsList(
+    public Page<NotificationResponse> getAll(
             String recipientId,
             List<Channel> channels,
             List<Status> statuses,
-            Pageable pageable
+            int page,
+            int size
     ) {
-        return getNotificationsPage(recipientId, channels, statuses, pageable)
-                .getContent();
+        Pageable sortedByDateDesc = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        Page<Notification> pageEnt = getNotificationsPage(recipientId, channels, statuses, sortedByDateDesc);
+        List<NotificationResponse> dtoList = pageEnt.stream()
+                .map(mapper::toDto)
+                .toList();
+
+        return new PageImpl<>(
+                dtoList,
+                sortedByDateDesc,
+                pageEnt.getTotalElements()
+        );
     }
 
     @Transactional(readOnly = true)
-    public Page<Notification> getNotificationsPage(
+    protected Page<Notification> getNotificationsPage(
             String recipientId,
             List<Channel> channels,
             List<Status> statuses,

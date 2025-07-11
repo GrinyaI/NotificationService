@@ -3,7 +3,7 @@ LABEL authors="grine"
 
 WORKDIR /app
 
-COPY target/notification-service-0.0.1-SNAPSHOT.jar app.jar
+COPY target/NotificationService.jar app.jar
 
 EXPOSE 8080
 

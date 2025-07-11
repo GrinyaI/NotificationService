@@ -30,6 +30,7 @@
         <java.version>17</java.version>
         <spring-boot.version>3.5.3</spring-boot.version>
         <mapstruct.version>1.6.3</mapstruct.version>
+        <maven.checkstyle.plugin.version>3.2.0</maven.checkstyle.plugin.version>
     </properties>
     <dependencies>
         <!-- Spring Boot Starters -->
@@ -130,7 +131,27 @@
     </dependencies>
 
     <build>
+        <finalName>NotificationService</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven.checkstyle.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>validate-code-style</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <configLocation>src/main/resources/codestyle/checkstyle.xml</configLocation>
+                    <consoleOutput>true</consoleOutput>
+                    <failOnViolation>true</failOnViolation>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
