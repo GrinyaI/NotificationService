@@ -5,6 +5,7 @@ import com.example.notifications.dto.NotificationResponse;
 import com.example.notifications.entity.enums.Channel;
 import com.example.notifications.entity.enums.Status;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,7 @@ class NotificationServiceIntegrationTest {
         ResponseEntity<NotificationResponse> fetched = restTemplate.getForEntity(
                 "/api/notifications/{id}", NotificationResponse.class, id);
 
+        Assertions.assertNotNull(fetched.getBody());
         assertThat(fetched.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(fetched.getBody().getDeliveryStatus()).isEqualTo(Status.SENT);
     }
