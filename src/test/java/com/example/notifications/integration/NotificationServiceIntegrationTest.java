@@ -5,7 +5,6 @@ import com.example.notifications.dto.NotificationResponse;
 import com.example.notifications.entity.enums.Channel;
 import com.example.notifications.entity.enums.Status;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.kafka.KafkaContainer;
+import org.testcontainers.kafka.ConfluentKafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import java.util.List;
@@ -45,7 +44,7 @@ class NotificationServiceIntegrationTest {
             .withPassword("test");
 
     @Container
-    static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.5.0"));
+    static ConfluentKafkaContainer kafka = new ConfluentKafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.5.0"));
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -92,7 +91,6 @@ class NotificationServiceIntegrationTest {
         ResponseEntity<NotificationResponse> fetched = restTemplate.getForEntity(
                 "/api/notifications/{id}", NotificationResponse.class, id);
 
-        Assertions.assertNotNull(fetched.getBody());
         assertThat(fetched.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(fetched.getBody().getDeliveryStatus()).isEqualTo(Status.SENT);
     }
