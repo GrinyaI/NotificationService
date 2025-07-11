@@ -19,7 +19,7 @@ public class NotificationResponse {
     private String recipientId;
     private Channel channel;
     private String payload;
-    private Status status;
+    private Status deliveryStatus;
     private Instant createdAt;
     private Instant sentAt;
     private Boolean isRead;

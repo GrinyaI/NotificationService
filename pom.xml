@@ -2,36 +2,29 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.3</version>
         <relativePath/>
     </parent>
+
     <groupId>com.example.notifications</groupId>
     <artifactId>notification-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>NotificationService</name>
     <description>NotificationService</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+
     <properties>
         <java.version>17</java.version>
         <spring-boot.version>3.5.3</spring-boot.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <maven.checkstyle.plugin.version>3.2.0</maven.checkstyle.plugin.version>
+        <flywaydb.version>9.16.0</flywaydb.version>
+        <springdoc.openapi.ui.version>2.8.8</springdoc.openapi.ui.version>
     </properties>
+
     <dependencies>
         <!-- Spring Boot Starters -->
         <dependency>
@@ -58,7 +51,7 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>9.16.0</version>
+            <version>${flywaydb.version}</version>
         </dependency>
         <!-- Lombok -->
         <dependency>
@@ -82,7 +75,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.8.8</version>
+            <version>${springdoc.openapi.ui.version}</version>
         </dependency>
         <!-- PostgreSQL Driver -->
         <dependency>
@@ -125,7 +118,17 @@
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
             <artifactId>kafka</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

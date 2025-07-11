@@ -1,5 +1,5 @@
 FROM eclipse-temurin:17-jre-alpine
-LABEL authors="grine"
+LABEL authors="Grinevich Ilya"
 
 WORKDIR /app
 

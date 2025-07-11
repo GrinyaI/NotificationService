@@ -40,4 +40,4 @@ server:
 logging:
   level:
     root: INFO
-    com.example.notifications: DEBUG
+    com.example.notifications: TRACE

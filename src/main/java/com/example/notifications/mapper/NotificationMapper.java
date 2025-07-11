@@ -11,7 +11,7 @@ public interface NotificationMapper {
     @Mapping(target = "recipientId", source = "entity.recipientId")
     @Mapping(target = "channel", source = "entity.channel")
     @Mapping(target = "payload", source = "entity.payload")
-    @Mapping(target = "status", source = "entity.status")
+    @Mapping(target = "deliveryStatus", source = "entity.status")
     @Mapping(target = "createdAt", source = "entity.createdAt")
     @Mapping(target = "sentAt", source = "entity.sentAt")
     @Mapping(target = "isRead", source = "entity.isRead")
