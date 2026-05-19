@@ -33,6 +33,28 @@ kafka:
     email: notifications.email
     sms: notifications.sms
     push: notifications.push
+    partitions: 3
+    replicas: 1
+  consumer:
+    group:
+      email: notifications-email-group
+      sms: notifications-sms-group
+      push: notifications-push-group
+    retry:
+      backoff-ms: 2000
+      max-attempts: 2
+
+notification:
+  archive:
+    cron: "${NOTIFICATION_ARCHIVE_CRON:0 0 3 * * ?}"
+    retention-days: ${NOTIFICATION_ARCHIVE_RETENTION_DAYS:30}
+  outbox:
+    publish-delay-ms: 1000
+    initial-delay-ms: 0
+    max-attempts: 3
+    send-timeout-seconds: 5
+    batch-size: 50
+    processing-timeout-seconds: 60
 
 server:
   port: ${SERVER_PORT:8080}
