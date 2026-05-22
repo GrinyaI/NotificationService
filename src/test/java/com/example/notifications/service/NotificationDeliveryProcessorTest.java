@@ -4,6 +4,7 @@ import com.example.notifications.entity.Notification;
 import com.example.notifications.entity.enums.Channel;
 import com.example.notifications.entity.enums.Status;
 import com.example.notifications.repository.NotificationRepository;
+import com.example.notifications.service.delivery.NotificationSender;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +26,8 @@ class NotificationDeliveryProcessorTest {
 
     @Mock
     private NotificationRepository repository;
+    @Mock
+    private NotificationSender sender;
     @InjectMocks
     private NotificationDeliveryProcessor processor;
 
@@ -38,6 +41,7 @@ class NotificationDeliveryProcessorTest {
 
         assertThat(notification.getStatus()).isEqualTo(Status.SENT);
         assertThat(notification.getSentAt()).isNotNull();
+        verify(sender).send(notification);
         verify(repository).save(notification);
     }
 
@@ -51,6 +55,7 @@ class NotificationDeliveryProcessorTest {
         processor.process(Channel.EMAIL, id.toString(), "payload");
 
         verify(repository, never()).save(notification);
+        verify(sender, never()).send(notification);
     }
 
     @Test
@@ -62,6 +67,7 @@ class NotificationDeliveryProcessorTest {
         assertThatThrownBy(() -> processor.process(Channel.SMS, id.toString(), "payload"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(id.toString());
+        verify(sender, never()).send(notification);
         verify(repository, never()).save(notification);
     }
 

@@ -4,6 +4,7 @@ import com.example.notifications.entity.Notification;
 import com.example.notifications.entity.enums.Channel;
 import com.example.notifications.entity.enums.Status;
 import com.example.notifications.repository.NotificationRepository;
+import com.example.notifications.service.delivery.NotificationSender;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ public class NotificationDeliveryProcessor {
     private static final Logger log = LoggerFactory.getLogger(NotificationDeliveryProcessor.class);
 
     private final NotificationRepository repository;
+    private final NotificationSender sender;
 
     @Transactional
     @Caching(evict = {
@@ -40,7 +42,7 @@ public class NotificationDeliveryProcessor {
             return;
         }
 
-        log.info("Simulated {} notification delivery {}: {}", channel, notificationId, payload);
+        sender.send(notification);
         notification.setStatus(Status.SENT);
         notification.setSentAt(Instant.now());
         notification.setErrorDescription(null);

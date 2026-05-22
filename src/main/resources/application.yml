@@ -55,6 +55,12 @@ notification:
     send-timeout-seconds: 5
     batch-size: 50
     processing-timeout-seconds: 60
+  sms:
+    provider: ${SMS_PROVIDER:SIMULATED}
+    exolve:
+      api-key: ${EXOLVE_API_KEY:}
+      base-url: ${EXOLVE_BASE_URL:https://api.exolve.ru}
+      sender-number: ${EXOLVE_SENDER_NUMBER:}
 
 server:
   port: ${SERVER_PORT:8080}
