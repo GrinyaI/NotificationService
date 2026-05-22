@@ -61,6 +61,20 @@ notification:
       api-key: ${EXOLVE_API_KEY:}
       base-url: ${EXOLVE_BASE_URL:https://api.exolve.ru}
       sender-number: ${EXOLVE_SENDER_NUMBER:}
+  email:
+    provider: ${EMAIL_PROVIDER:SIMULATED}
+    yandex-smtp:
+      host: ${YANDEX_SMTP_HOST:smtp.yandex.ru}
+      port: ${YANDEX_SMTP_PORT:465}
+      username: ${YANDEX_SMTP_USERNAME:}
+      password: ${YANDEX_SMTP_PASSWORD:}
+      from: ${YANDEX_SMTP_FROM:}
+      subject: ${YANDEX_SMTP_SUBJECT:NotificationService notification}
+      ssl-enabled: ${YANDEX_SMTP_SSL_ENABLED:true}
+      starttls-enabled: ${YANDEX_SMTP_STARTTLS_ENABLED:false}
+      connection-timeout-ms: ${YANDEX_SMTP_CONNECTION_TIMEOUT_MS:10000}
+      timeout-ms: ${YANDEX_SMTP_TIMEOUT_MS:10000}
+      write-timeout-ms: ${YANDEX_SMTP_WRITE_TIMEOUT_MS:10000}
 
 server:
   port: ${SERVER_PORT:8080}
