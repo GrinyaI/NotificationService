@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +20,7 @@ public class NotificationProcessingFailureService {
     private final NotificationRepository repository;
 
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(cacheNames = "notification", key = "#key"),
-            @CacheEvict(cacheNames = "notifications", allEntries = true)
-    })
+    @CacheEvict(cacheNames = "notification", key = "#key")
     public void markFailed(String key, Exception exception) {
         UUID notificationId = parseNotificationId(key);
         if (notificationId == null) {
