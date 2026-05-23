@@ -21,12 +21,14 @@ class NotificationSenderTest {
     private SmsSender smsSender;
     @Mock
     private EmailSender emailSender;
+    @Mock
+    private PushSender pushSender;
 
     private NotificationSender sender;
 
     @BeforeEach
     void setUp() {
-        sender = new NotificationSender(smsSender, emailSender);
+        sender = new NotificationSender(smsSender, emailSender, pushSender);
     }
 
     @Test
@@ -55,6 +57,7 @@ class NotificationSenderTest {
 
         sender.send(notification);
 
+        verify(pushSender).send(notification);
         verify(emailSender, never()).send(notification);
         verify(smsSender, never()).send(notification);
     }

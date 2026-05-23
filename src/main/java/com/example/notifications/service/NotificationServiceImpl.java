@@ -223,12 +223,6 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(
-            cacheNames = "notifications",
-            key = "#recipientId + ':' + (#channels == null ? 'ALL' : #channels.toString())"
-                    + " + ':' + (#statuses == null ? 'ALL' : #statuses.toString())"
-                    + " + ':' + #page + ':' + #size"
-    )
     @Override
     public Page<NotificationResponse> getAll(
             String recipientId,
