@@ -71,7 +71,7 @@ Linux/macOS:
 Создайте локальный `.env` из [.env.example](.env.example), если нужно переопределить порты или пароли.
 
 ```bash
-docker compose up --build
+docker compose up -d notification-service
 ```
 
 Swagger UI:
