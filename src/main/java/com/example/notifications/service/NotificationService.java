@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface NotificationService {
+
     List<NotificationResponse> createNotifications(NotificationRequest request);
 
     NotificationResponse getById(UUID id);
