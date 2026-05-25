@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,10 +26,7 @@ public class NotificationDeliveryProcessor {
     private final NotificationSender sender;
 
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(cacheNames = "notification", key = "#key"),
-            @CacheEvict(cacheNames = "notifications", allEntries = true)
-    })
+    @CacheEvict(cacheNames = "notification", key = "#key")
     public void process(Channel channel, String key, String payload) {
         UUID notificationId = parseNotificationId(key);
         Notification notification = repository.findById(notificationId)

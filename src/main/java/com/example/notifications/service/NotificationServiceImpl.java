@@ -18,7 +18,6 @@ import com.example.notifications.repository.OutboxMessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -50,14 +49,13 @@ public class NotificationServiceImpl implements NotificationService {
     private final KafkaTopicProperties topicProperties;
     private final TransactionTemplate transactionTemplate;
 
-    @CacheEvict(cacheNames = "notifications", allEntries = true)
     @Override
     public List<NotificationResponse> createNotifications(NotificationRequest request) {
-        Optional<List<NotificationResponse>> existing = findExistingNotifications(request);
-        if (existing.isPresent()) {
-            return existing.get();
-        }
+        return findExistingNotifications(request)
+                .orElseGet(() -> createNewNotifications(request));
+    }
 
+    private List<NotificationResponse> createNewNotifications(NotificationRequest request) {
         try {
             return transactionTemplate.execute(status -> createNotificationsInTransaction(request));
         } catch (DataIntegrityViolationException e) {
@@ -262,10 +260,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(cacheNames = "notification", key = "#id.toString()"),
-            @CacheEvict(cacheNames = "notifications", allEntries = true)
-    })
+    @CacheEvict(cacheNames = "notification", key = "#id.toString()")
     @Override
     public void markAsRead(UUID id) {
         Notification notification = repository.findById(id)
@@ -275,10 +270,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(cacheNames = "notification", key = "#id.toString()"),
-            @CacheEvict(cacheNames = "notifications", allEntries = true)
-    })
+    @CacheEvict(cacheNames = "notification", key = "#id.toString()")
     @Override
     public void markAsUnread(UUID id) {
         Notification notification = repository.findById(id)

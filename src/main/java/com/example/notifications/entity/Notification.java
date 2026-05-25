@@ -30,6 +30,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class Notification {
+
     @Id
     @GeneratedValue
     private UUID id;

@@ -7,6 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface NotificationMapper {
+
     @Mapping(target = "id", source = "entity.id")
     @Mapping(target = "recipientId", source = "entity.recipientId")
     @Mapping(target = "audienceType", source = "entity.audienceType")
