@@ -95,3 +95,27 @@ docker compose down -v
 - `JAVA_OPTS` - дополнительные JVM-опции.
 - `NOTIFICATION_ARCHIVE_CRON` - cron автоархивации.
 - `NOTIFICATION_ARCHIVE_RETENTION_DAYS` - срок хранения активных уведомлений до архивации.
+
+## Demo Deployment
+
+Проект опубликован на VPS и доступен через HTTPS:
+
+- Swagger UI: `https://83.217.202.181/swagger-ui/index.html`
+- OpenAPI JSON: `https://83.217.202.181/v3/api-docs`
+- API base URL: `https://83.217.202.181/api`
+
+Доступ к стенду закрыт Basic Auth. Логин и пароль выдаются отдельно.
+
+### Инфраструктура
+
+Сервис развернут на VPS через Docker Compose:
+
+- `notification-service` - Spring Boot backend
+- `postgres` - база данных
+- `kafka` + `zookeeper` - очередь для асинхронной обработки уведомлений
+- `redis` - кэш
+- `nginx` - reverse proxy, HTTPS и Basic Auth
+
+### HTTPS
+
+HTTPS настроен через Let’s Encrypt IP certificate для IPv4-адреса сервера. Сертификат автоматически обновляется через Certbot.

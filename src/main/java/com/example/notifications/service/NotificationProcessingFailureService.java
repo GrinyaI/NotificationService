@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.UUID;
 
@@ -44,7 +45,17 @@ public class NotificationProcessingFailureService {
     }
 
     private String errorMessage(Exception exception) {
-        Throwable cause = exception.getCause() == null ? exception : exception.getCause();
-        return cause.getMessage();
+        Throwable cause = rootCause(exception);
+        return StringUtils.hasText(cause.getMessage())
+                ? cause.getMessage()
+                : cause.getClass().getSimpleName();
+    }
+
+    private Throwable rootCause(Throwable throwable) {
+        Throwable cause = throwable;
+        while (cause.getCause() != null && cause.getCause() != cause) {
+            cause = cause.getCause();
+        }
+        return cause;
     }
 }
