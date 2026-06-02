@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
@@ -53,7 +54,44 @@ public class NotificationController {
                     required = true,
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = NotificationRequest.class)
+                            schema = @Schema(implementation = NotificationRequest.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Email notification",
+                                            value = """
+                                                    {
+                                                      "recipientId": "grinya",
+                                                      "audienceType": "PERSONAL",
+                                                      "audienceTarget": "grinya",
+                                                      "payload": "Тестовое уведомление",
+                                                      "channels": ["EMAIL"],
+                                                      "priority": "NORMAL",
+                                                      "idempotencyKey": "email-demo-4bd32bf3-841f-441f-9bbd-83b99427c2d4",
+                                                      "channelDestinations": {
+                                                        "EMAIL": "notificationservicedemo@yandex.ru"
+                                                      }
+                                                    }
+                                                    """
+                                    ),
+                                    @ExampleObject(
+                                            name = "All channels",
+                                            value = """
+                                                    {
+                                                      "recipientId": "demo-user",
+                                                      "audienceType": "PERSONAL",
+                                                      "audienceTarget": "demo-user",
+                                                      "payload": "Тестовое уведомление",
+                                                      "channels": ["SMS", "EMAIL", "PUSH"],
+                                                      "priority": "NORMAL",
+                                                      "idempotencyKey": "all-channels-4bd32bf3-841f-441f-9bbd-83b99427c2d4",
+                                                      "channelDestinations": {
+                                                        "SMS": "79048269449",
+                                                        "EMAIL": "notificationservicedemo@yandex.ru"
+                                                      }
+                                                    }
+                                                    """
+                                    )
+                            }
                     )
             ),
             responses = {
